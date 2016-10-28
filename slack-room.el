@@ -121,8 +121,7 @@
                  #'(lambda (rs)
                      (cl-remove-if #'(lambda (r)
                                        (or (not (slack-room-member-p r))
-                                           (slack-room-archived-p r)
-                                           (not (slack-room-open-p r))))
+                                           (slack-room-archived-p r)))
                                    rs)))))
     (slack-select-from-list
      (alist "Select Channel: ")
@@ -345,9 +344,8 @@
   (interactive)
   (let ((team (slack-team-select)))
     (slack-room-select
-     (cl-loop for team in (list team)
-              append (with-slots (groups ims channels) team
-                       (append ims groups channels))))))
+     (with-slots (groups ims channels) team
+       (append ims groups channels)))))
 
 (defun slack-create-room (url team success)
   (slack-request
