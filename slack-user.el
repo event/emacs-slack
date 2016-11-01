@@ -56,8 +56,8 @@
 
 (defun slack-user-presence-to-string (user)
   (if (string= (plist-get user :presence) "active")
-      "* "
-    "  "))
+      "*"
+    ""))
 
 (provide 'slack-user)
 ;;; slack-user.el ends here

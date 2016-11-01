@@ -220,14 +220,14 @@
                      (cl-sort rooms #'string<
                               :key #'(lambda (name-with-room) (latest-ts (cdr name-with-room))))))
         (build-label (room)
-                     (concat (im-presence room)
-                             (format "%s %s"
+                     (concat (format "%s %s"
                                      (slack-room-name-with-team-name room)
-                                     (unread-count room))))
+                                     (unread-count room))
+                             (im-presence room)))
         (im-presence (room)
                      (if (object-of-class-p room 'slack-im)
                          (slack-im-user-presence room)
-                       "  "))
+                       ""))
         (build-cons (room)
                     (cons (build-label room) room)))
      (sort-rooms
