@@ -30,6 +30,7 @@
 (require 'slack-team)
 (require 'slack-channel)
 (require 'slack-im)
+(require 'slack-mpim)
 (require 'slack-file)
 (require 'slack-message-notification)
 (require 'slack-message-sender)
@@ -103,6 +104,7 @@ never means never show typing indicator."
                     :success (cl-function (lambda (&key data &allow-other-keys)
                                             (slack-on-authorize data team)))
                     :sync nil
+                    :params (list (cons "mpim_aware" t))
                     :error error-callback)))
       (push request slack-authorize-requests))))
 
@@ -126,6 +128,9 @@ never means never show typing indicator."
       (oset team ims
             (create-rooms (plist-get data :ims)
                           team 'slack-im))
+      (oset team mpims
+            (create-rooms (plist-get data :mpims)
+                          team 'slack-mpim))
       (oset team self self)
       (oset team self-id (plist-get self :id))
       (oset team self-name (plist-get self :name))
@@ -141,8 +146,8 @@ never means never show typing indicator."
    (message "Slack Authorization Finished - %s"
             (oref team name))
    (let ((team (slack-update-team data team)))
-     (with-slots (groups ims channels) team
-       (cl-loop for room in (append groups ims channels)
+     (with-slots (groups ims channels mpims) team
+       (cl-loop for room in (append groups ims channels mpims)
                 do (let ((bufname (slack-room-buffer-name room)))
                      (when (get-buffer bufname)
                        (kill-buffer bufname)))))

@@ -344,8 +344,8 @@
   (interactive)
   (let ((team (slack-team-select)))
     (slack-room-select
-     (with-slots (groups ims channels) team
-       (append ims groups channels)))))
+     (with-slots (groups ims mpims channels) team
+       (append ims mpims groups channels)))))
 
 (defun slack-create-room (url team success)
   (slack-request

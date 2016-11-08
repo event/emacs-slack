@@ -108,7 +108,7 @@
          ((string-prefix-p "C" id) (cl-find-if #'find-room
                                                (oref team channels)))
          ((string-prefix-p "G" id) (cl-find-if #'find-room
-                                               (oref team groups)))
+                                               (append (oref team groups) (oref team mpims))))
          ((string-prefix-p "D" id) (cl-find-if #'find-room
                                                (oref team ims)))
          ((string-prefix-p "Q" id) (cl-find-if #'find-room
